@@ -55,6 +55,7 @@ public class Address
     public void setPerson(final Person person)
     {
         this.person = person;
+        this.personId = person.getId();
     }
 
     public String getPostcode()
