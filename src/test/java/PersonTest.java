@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -17,17 +18,18 @@ public class PersonTest
 
     @Test
     public void testWritePerson() {
-        Person person = new Person("Jack", "Bauer");
-        person.setAddress(new Address("123 Fake Street", "Springfield", "SP1F 123"));
+        Person person = new Person("Jack", "Bauer", new Address("123 Fake Street", "Springfield", "SP1F 123"));
         person.getAddress().setPerson(person);
 
         person = PersonTestUtil.save(person);
-        person = PersonTestUtil.read(person.getId());
 
-        assertEquals("Jack", person.getFirstName());
-        assertEquals("Bauer", person.getLastName());
-        assertEquals("123 Fake Street", person.getAddress().getStreet());
-        assertEquals("Springfield", person.getAddress().getTown());
+        Person storedPerson = PersonTestUtil.read(person.getId());
+
+        assertFalse(storedPerson.getId() == 0);
+        assertEquals("Jack", storedPerson.getFirstName());
+        assertEquals("Bauer", storedPerson.getLastName());
+        assertEquals("123 Fake Street", storedPerson.getAddress().getStreet());
+        assertEquals("Springfield", storedPerson.getAddress().getTown());
     }
 
     @Test
