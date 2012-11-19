@@ -48,16 +48,6 @@ public class Address
                '}';
     }
 
-    public int getPersonId()
-    {
-        return personId;
-    }
-
-    public void setPersonId(final int person_id)
-    {
-        this.personId = person_id;
-    }
-
     public Person getPerson()
     {
         return person;
