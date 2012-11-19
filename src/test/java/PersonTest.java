@@ -1,3 +1,4 @@
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -10,20 +11,27 @@ import static org.junit.Assert.assertTrue;
 public class PersonTest
 {
 
-    @Test
-    public void testReadPerson() {
-        List people = PersonTestUtil.listPeople();
-        assertTrue(people.isEmpty());
+    @Before
+    public void deleteAllPeople() {
+        List<Person> people = PersonTestUtil.listPeople();
+        for (Person person : people)
+        {
+            PersonTestUtil.delete(person);
+        }
     }
 
-    @Test
-    public void testWritePerson() {
+    private Person insertPerson() {
         Person person = new Person("Jack", "Bauer", new Address("123 Fake Street", "Springfield", "SP1F 123"));
         person.getAddress().setPerson(person);
 
         person = PersonTestUtil.save(person);
 
-        Person storedPerson = PersonTestUtil.read(person.getId());
+        return PersonTestUtil.read(person.getId());
+    }
+
+    @Test
+    public void testWritePerson() {
+        Person storedPerson = insertPerson();
 
         assertFalse(storedPerson.getId() == 0);
         assertEquals("Jack", storedPerson.getFirstName());
@@ -34,19 +42,22 @@ public class PersonTest
 
     @Test
     public void testUpdatePerson() {
+        Person storedPerson = insertPerson();
 
-        Person person = PersonTestUtil.read(1); // read Person with id 1
+        Person person = PersonTestUtil.read(storedPerson.getId()); // read Person with id 1
         person.setFirstName("James");
         PersonTestUtil.update(person);  // save the updated Person details
 
-        Person personAfterUpdate = PersonTestUtil.read(1); // read again Person with id 1
+        Person personAfterUpdate = PersonTestUtil.read(storedPerson.getId()); // read again Person with id 1
 
         assertEquals("James", personAfterUpdate.getFirstName());
     }
 
     @Test
     public void testDeletePerson() {
-        Person person = PersonTestUtil.read(1); // read Person with id 1
+        Person storedPerson = insertPerson();
+
+        Person person = PersonTestUtil.read(storedPerson.getId()); // read Person with id 1
         PersonTestUtil.delete(person);
         Person deletedPerson = PersonTestUtil.read(person.getId());
         assertNull("Expected deleted person object to be null but was: " + deletedPerson, deletedPerson);
