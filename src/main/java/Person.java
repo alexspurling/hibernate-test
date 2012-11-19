@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name="id")
     private int id;
 
@@ -26,7 +26,7 @@ public class Person {
     @Column(name="last_name")
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "person", optional = false)
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     private Address address;
 
     public Person(final String firstName, final String lastName, final Address address)

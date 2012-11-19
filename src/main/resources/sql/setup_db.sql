@@ -1,5 +1,7 @@
 set foreign_key_checks=0;
+DROP TABLE IF EXISTS address;
 DROP TABLE IF EXISTS person;
+
 CREATE TABLE person (
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(50) NULL DEFAULT NULL,
@@ -7,9 +9,8 @@ CREATE TABLE person (
     PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS address;
 CREATE TABLE address (
-    person_id INT(10) NOT NULL,
+    person_id INT(10) NOT NULL AUTO_INCREMENT,
     street VARCHAR(50) NULL DEFAULT NULL,
     town VARCHAR(50) NULL DEFAULT NULL,
     postcode VARCHAR(50) NULL DEFAULT NULL,
