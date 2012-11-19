@@ -10,7 +10,7 @@ CREATE TABLE person (
 );
 
 CREATE TABLE address (
-    person_id INT(10) NOT NULL AUTO_INCREMENT,
+    person_id INT(10) NOT NULL,
     street VARCHAR(50) NULL DEFAULT NULL,
     town VARCHAR(50) NULL DEFAULT NULL,
     postcode VARCHAR(50) NULL DEFAULT NULL,

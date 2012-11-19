@@ -1,13 +1,8 @@
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -16,12 +11,10 @@ public class Address
 {
     @Id
     @Column(name="person_id", unique=true, nullable=false)
-    @GeneratedValue(generator="gen")
-    @GenericGenerator(name="gen", strategy="foreign", parameters=@Parameter(name="property", value="person"))
-    private int person_id;
+    private int personId;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @MapsId
+    @OneToOne()
     private Person person;
 
     @Column(name = "street")
@@ -48,21 +41,21 @@ public class Address
     public String toString()
     {
         return "Address{" +
-               "personId=" + person_id +
+               "personId=" + personId +
                ", street='" + street + '\'' +
                ", town='" + town + '\'' +
                ", postcode='" + postcode + '\'' +
                '}';
     }
 
-    public int getPerson_id()
+    public int getPersonId()
     {
-        return person_id;
+        return personId;
     }
 
-    public void setPerson_id(final int person_id)
+    public void setPersonId(final int person_id)
     {
-        this.person_id = person_id;
+        this.personId = person_id;
     }
 
     public Person getPerson()
