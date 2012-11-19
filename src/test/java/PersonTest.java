@@ -21,11 +21,14 @@ public class PersonTest
     }
 
     private Person insertPerson() {
-        Person person = new Person("Jack", "Bauer", new Address("123 Fake Street", "Springfield", "SP1F 123"));
-        person.getAddress().setPerson(person);
-
+        return insertPerson(new Address("123 Fake Street", "Springfield", "SP1F 123"));
+    }
+    private Person insertPerson(Address address) {
+        Person person = new Person("Jack", "Bauer", address);
+        if (address != null) {
+            person.getAddress().setPerson(person);
+        }
         person = PersonTestUtil.save(person);
-
         return PersonTestUtil.read(person.getId());
     }
 
@@ -44,11 +47,11 @@ public class PersonTest
     public void testUpdatePerson() {
         Person storedPerson = insertPerson();
 
-        Person person = PersonTestUtil.read(storedPerson.getId()); // read Person with id 1
+        Person person = PersonTestUtil.read(storedPerson.getId());
         person.setFirstName("James");
         PersonTestUtil.update(person);  // save the updated Person details
 
-        Person personAfterUpdate = PersonTestUtil.read(storedPerson.getId()); // read again Person with id 1
+        Person personAfterUpdate = PersonTestUtil.read(storedPerson.getId());
 
         assertEquals("James", personAfterUpdate.getFirstName());
     }
@@ -57,10 +60,19 @@ public class PersonTest
     public void testDeletePerson() {
         Person storedPerson = insertPerson();
 
-        Person person = PersonTestUtil.read(storedPerson.getId()); // read Person with id 1
+        Person person = PersonTestUtil.read(storedPerson.getId());
         PersonTestUtil.delete(person);
         Person deletedPerson = PersonTestUtil.read(person.getId());
         assertNull("Expected deleted person object to be null but was: " + deletedPerson, deletedPerson);
     }
 
+    @Test
+    public void testWritePersonWithoutAddress() {
+        Person storedPerson = insertPerson(null);
+
+        assertFalse(storedPerson.getId() == 0);
+        assertEquals("Jack", storedPerson.getFirstName());
+        assertEquals("Bauer", storedPerson.getLastName());
+        assertNull(storedPerson.getAddress());
+    }
 }
